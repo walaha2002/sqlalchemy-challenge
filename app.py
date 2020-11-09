@@ -60,10 +60,19 @@ def precipitation():
     
     return jsonify(prcp_list)
 
-    # dates_prcp_list=list(np.ravel(dates_prcp))
-
+   
 # @app.route("/api/v1.0/stations/<station>)
-# @app.route("/api/v1.0/tobs/<tobs>)
+@app.route("/api/v1.0/tobs")
+def tobs():
+     # Create our session (link) from Python to the DB
+    session = Session(engine)
+
+      #Query dates and precipitation
+    stations=session.query(station.station,station.name,station.latitude,station.longitude,station.elevation).all()
+
+    session.close()
+
+    return jsonify(stations)
 
 if __name__=="__main__":
     app.run(debug=True)
