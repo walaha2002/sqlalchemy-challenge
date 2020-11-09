@@ -47,13 +47,21 @@ def precipitation():
     
 
     #Query dates and precipitation
-    dates_prcp=session.query(measurement.date,measurement.prcp)
+    dates_prcp=session.query(measurement.date,measurement.prcp).all()
 
     session.close()
 
-    dates_prcp_list=list(np.ravel(dates_prcp))
+    prcp_list=[]
+    for date, prcp in dates_prcp:
+        prcp_dict={}
+        prcp_dict["date"]=date
+        prcp_dict["prcp"]=prcp
+        prcp_list.append(prcp_dict)
+    
+    return jsonify(prcp_list)
 
-    return jsonify(dates_prcp_list)
+    # dates_prcp_list=list(np.ravel(dates_prcp))
+
 # @app.route("/api/v1.0/stations/<station>)
 # @app.route("/api/v1.0/tobs/<tobs>)
 
