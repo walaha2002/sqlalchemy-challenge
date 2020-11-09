@@ -14,9 +14,10 @@ from flask import Flask, jsonify
 engine = create_engine("sqlite:///Resources/hawaii.sqlite")
 
 # reflect an existing database into a new model
-Base = automap_base()
+base = automap_base()
+
 # reflect the tables
-Base.prepare(engine, reflect=True)
+base.prepare(engine, reflect=True)
 
 # We can view all of the classes that automap found
 # base.classes.keys()
@@ -24,8 +25,6 @@ Base.prepare(engine, reflect=True)
 # Save references to each table
 measurement = base.classes.measurement
 station=base.classes.station
-
-
 
 # Create an app
 app=Flask(__name__)
@@ -41,10 +40,7 @@ def index():
     "     Start Dates: /api/v1.0/<start><br/><br/>"
     "     Start and End Dates: /api/v1.0/<start>/<end><br/><br/>")
 
-
-
-
-@app.route("/api/v1.0/precipitation)
+@app.route("/api/v1.0/precipitation")
 def precipitation():
     # Create our session (link) from Python to the DB
     session = Session(engine)
@@ -56,6 +52,8 @@ def precipitation():
     session.close()
 
     dates_prcp_list=list(np.ravel(dates_prcp))
+
+    return jsonify(dates_prcp_list)
 # @app.route("/api/v1.0/stations/<station>)
 # @app.route("/api/v1.0/tobs/<tobs>)
 
