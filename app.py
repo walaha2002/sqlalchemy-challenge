@@ -62,17 +62,17 @@ def precipitation():
 
    
 # @app.route("/api/v1.0/stations/<station>)
-@app.route("/api/v1.0/tobs")
-def tobs():
+@app.route("/api/v1.0/stations")
+def stations():
      # Create our session (link) from Python to the DB
     session = Session(engine)
 
       #Query dates and precipitation
-    stations=session.query(station.station,station.name,station.latitude,station.longitude,station.elevation).all()
+    stns=session.query(station.station,station.name,station.latitude,station.longitude,station.elevation).all()
 
     session.close()
 
-    return jsonify(stations)
+    return jsonify(stns)
 
 if __name__=="__main__":
     app.run(debug=True)
