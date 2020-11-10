@@ -81,13 +81,25 @@ def tobs():
 
     # Query data for most active
     # tobs=session.query(measurement.date,measurement.prcp.measurement.tobs,measurement.station).all()
-    
-    for station, id in session.query(measurement.station,measurement.id):
-        return(station,id)
+    # data=engine.execute("SELECT COUNT(ID),STATION FROM MEASUREMENT")
+    # return (data)
+
+    sel=[measurement.station, func.count(measurement.station)]
+    most_active=session.query(*sel).\
+        order_by(func.count(measurement.station)).all()
+    return(most_active)
+
+    # W O R K I N G
+    # for station, id in session.query(measurement.station,measurement.id):
+    #     return(station,id)
+    # most_active = measurement.station
+    # W O R K I N G
+
+
     # most_active=engine.execute("SELECT COUNT(station), station, FROM MEASUREMENT GROUPBY STATION")
     # print(most_active)
 
-
     session.close()
+    
 if __name__=="__main__":
     app.run(debug=True)
