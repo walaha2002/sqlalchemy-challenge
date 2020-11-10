@@ -38,7 +38,7 @@ def index():
     "     Precipitation: /api/v1.0/precipitation<br/><br/>"
     "     Stations: /api/v1.0/stations<br/><br/>"
     "     Start Dates: /api/v1.0/<start><br/><br/>"
-    "     Start and End Dates: /api/v1.0/<start>/<end><br/><br/>")
+    "     Start and End Dates: /api/v1.0/<start>/<end><br/>")
 
 @app.route("/api/v1.0/precipitation")
 def precipitation():
