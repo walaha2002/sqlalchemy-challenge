@@ -37,6 +37,7 @@ def index():
     "     Available routes are the following:<br/><br/>"
     "     Precipitation: /api/v1.0/precipitation<br/><br/>"
     "     Stations: /api/v1.0/stations<br/><br/>"
+    "     Temperature Observations: /api/v1.0/tobs<br/><br/>"
     "     Start Dates: /api/v1.0/<start><br/><br/>"
     "     Start and End Dates: /api/v1.0/<start>/<end><br/>")
 
@@ -61,7 +62,6 @@ def precipitation():
     return jsonify(prcp_list)
 
    
-# @app.route("/api/v1.0/stations/<station>)
 @app.route("/api/v1.0/stations")
 def stations():
      # Create our session (link) from Python to the DB
@@ -74,5 +74,18 @@ def stations():
 
     return jsonify(stns)
 
+@app.route("/api/v1.0/tobs")
+def tobs():
+     # Create our session (link) from Python to the DB
+    session = Session(engine)
+
+    # Query data for most active
+    # tobs=session.query(measurement.date,measurement.prcp.measurement.tobs,measurement.station).all()
+    
+    most_active=engine.execute("SELECT COUNT(station), station, FROM MEASUREMENT GROUPBY STATION")
+    # print(most_active)
+
+
+    session.close()
 if __name__=="__main__":
     app.run(debug=True)
