@@ -3,7 +3,7 @@ import numpy as np
 import sqlalchemy
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
-from sqlalchemy import create_engine, func
+from sqlalchemy import create_engine, func, desc
 
 # Import Flask
 from flask import Flask, jsonify
@@ -79,16 +79,23 @@ def tobs():
      # Create our session (link) from Python to the DB
     session = Session(engine)
 
+    count = session.query(measurement.station,func.count(measurement.station)).group_by(measurement.station).all()
+    # first_record=session.query()
+
+
     # Query data for most active
     # tobs=session.query(measurement.date,measurement.prcp.measurement.tobs,measurement.station).all()
     # data=engine.execute("SELECT COUNT(ID),STATION FROM MEASUREMENT")
     # return (data)
 
-    sel=[measurement.station, func.count(measurement.station)]
-    most_active=session.query(*sel).\
-        order_by(func.count(measurement.station)).all()
-    return(most_active)
-
+   
+    # most_active=session.query("SELECT COUNT(station), FROM MEASUREMENT GROUPBY STATION") 
+    # most_active=engine.execute("SELECT COUNT(ID),STATION FROM MEASUREMENT GROUPBY STATION") 
+       
+    # return jsonify(most_active)
+    # most_active= session.query(func.count(measurement.station),measurement.station)
+    # print(most_active)
+ 
     # W O R K I N G
     # for station, id in session.query(measurement.station,measurement.id):
     #     return(station,id)
@@ -100,6 +107,7 @@ def tobs():
     # print(most_active)
 
     session.close()
-    
+    return jsonify(count)
+
 if __name__=="__main__":
     app.run(debug=True)
